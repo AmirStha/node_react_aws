@@ -1,6 +1,6 @@
-## new AWS Account
+## Deploy in a new AWS Account
 
-- If you are going to deploy in a completely new AWS account, please copy the cloudformation
+- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket
 
 ```bash
 aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucket/templates --recursive
@@ -19,6 +19,7 @@ aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucke
 ### step 1:
 
 - To create code commit repo
+
   Example
 
   ```bash
