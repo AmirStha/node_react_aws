@@ -32,6 +32,4 @@ npm run server
 
 The React application will run on port 3001.
 
-# **For deployment please view**
-
-https://gitlab.com/bottle-tech/community/node-react/blob/master/deployment_instructions.md
+[# **For deployment please view**](https://gitlab.com/bottle-tech/community/node-react/blob/master/deployment_instructions.md)
