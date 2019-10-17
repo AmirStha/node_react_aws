@@ -7,12 +7,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Clone the project, change into the directory and install the dependencies.
 
 ```bash
-git clone https://gitlab.com/bottle-tech/iot/project-rt/project-rt-cloud.git
-cd project-rt-cloud
+git clone https://gitlab.com/bottle-tech/community/node-react.git
+cd node-react
 npm install
 ```
-
-Create a `.env` file for environment variables in your server.
 
 Run the React application on its own with the command:
 
@@ -26,4 +24,14 @@ Build the application
 npm run build
 ```
 
+Run the node server
+
+```bash
+npm run server
+```
+
 The React application will run on port 3001.
+
+> For deployment please view
+
+https://gitlab.com/bottle-tech/community/node-react/blob/master/deployment_instructions.md
