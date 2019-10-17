@@ -21,5 +21,5 @@ echo "LOCAL_IMAGE = $LOCAL_IMAGE"
 echo "ECR_REPO = $ECR_REPO"
 
 $(aws ecr get-login --region $REGION --no-include-email --profile=$PROFILE)
-docker tag $LOCAL_IMAGE:latest $ECR_IMAGE:latest
-docker push $ECR_IMAGE:latest
+docker tag $LOCAL_IMAGE:latest $ECR_REPO:latest
+docker push $ECR_REPO:latest
