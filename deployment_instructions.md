@@ -1,14 +1,16 @@
-## Deploy in a new AWS Account
-
-- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket
-
-```bash
-aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucket/templates --recursive
-```
-
 # Steps for deployment
 
-## Four cloudformation stack needs to be deployed
+## Prerequisites
+
+- aws cli
+- nodejs
+- aws iam user with proper access
+- git
+- code commit access
+
+**please node that 4 cloudformation stacks needs to deployed in total**
+
+# Repo stacks
 
 <!-- ## Common Steps
 
@@ -77,6 +79,8 @@ currently s3 rests in master and ecs in staging by default
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
 
+# Deployment Stack
+
 ## 3> ecr stack
 
 ### step 1:
@@ -120,3 +124,11 @@ currently s3 rests in master and ecs in staging by default
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
+
+## Deploy in a new AWS Account
+
+```bash
+aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucket/templates --recursive
+```
+
+- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment)
