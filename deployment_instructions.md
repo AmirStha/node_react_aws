@@ -34,10 +34,11 @@ aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucke
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
+    \
 
-- check if resources are created after resources are created
-- push the code to the code commit repo(manual for now for first time)
-- To push follow the two steps:
+* check if resources are created after resources are created
+* push the code to the code commit repo(manual for now for first time)
+* To push follow the two steps:
 
   ```bash
   git remote add <origin_name> <code_commit_repo_url>
