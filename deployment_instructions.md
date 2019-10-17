@@ -23,7 +23,7 @@
   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
   ```
 
   replace the value inside with your required inputs,
@@ -34,6 +34,9 @@
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
+  - "**s3_branch**" is the branch from where the s3 deployed starts
+  - "**ecs_branch**" is the branch from where the ecs deployed starts
+  - "**team**" the team to which the current user belongs to(you)
     \
 
 * check if resources are created in aws console(Cloudformation Section)
@@ -63,7 +66,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
    Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1"
+  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
   ```
 
   replace the value inside with your required inputs:
@@ -74,6 +77,9 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
+  - "**s3_branch**" is the branch from where the s3 deployed starts
+  - "**ecs_branch**" is the branch from where the ecs deployed starts
+  - "**team**" the team to which the current user belongs to(you)
 
 # Deployment Stack
 
@@ -83,7 +89,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
   ```
 
   replace the value inside with your required inputs
@@ -94,18 +100,34 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
+  - "**s3_branch**" is the branch from where the s3 deployed starts
+  - "**ecs_branch**" is the branch from where the ecs deployed starts
+  - "**team**" the team to which the current user belongs to(you)
 
 ## 4> ecs stack
 
 - build docker image
 - update details inside push
-- finally execute ./service_scripts/push.sh
+  \
+  Example
+
+  ```bash
+  ./service_scripts/push.sh  profile="default" region="ap-south-1" localImage="ecr-node-react" ecrRepo="ecr-repo-name"
+  ```
+
+  replace the value inside with your required inputs
+
+  - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
+  - "**region**" is the aws region you want to deploy your application
+  - "**localImage**" is the image built using docker build
+  - "**ecrRepo**" the remote rcr repo created for hosting the localImage)
+
 - To create ecs stack
   \
    Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.ecs.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.ecs.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
   ```
 
   replace the value inside with your required inputs
@@ -116,6 +138,9 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
   - "**token**" is the bit node token, for now you can you the one in the example
   - "**region**" is the aws region you want to deploy your application
+  - "**s3_branch**" is the branch from where the s3 deployed starts
+  - "**ecs_branch**" is the branch from where the ecs deployed starts
+  - "**team**" the team to which the current user belongs to(you)
 
 ## Deploy in a new AWS Account
 
