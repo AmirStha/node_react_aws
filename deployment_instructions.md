@@ -8,7 +8,7 @@
 - git
 - code commit access
 
-**please node that 4 cloudformation stacks needs to deployed in total**
+**_please note that 4 cloudformation stacks needs to deployed in total_**
 
 # Repo stacks
 
@@ -17,8 +17,6 @@
 - ./service_scripts/create_stack.sh shailendra-s3-deploy-ecs main.ecs.yaml 7b76e084-98d0-4cf6-852b-50aabea4e593(where the three parameters are stackname, yamlConfigFile, bitToken) -->
 
 ## 1> codecommit stack
-
-### step 1:
 
 - To create code commit repo
 
@@ -60,8 +58,6 @@ currently s3 rests in master and ecs in staging by default
 
 ## 2> s3 stack
 
-### step 1:
-
 - To create the stack
   \
    Example
@@ -83,8 +79,6 @@ currently s3 rests in master and ecs in staging by default
 
 ## 3> ecr stack
 
-### step 1:
-
 - To create ecr repo
   Example
 
@@ -102,8 +96,6 @@ currently s3 rests in master and ecs in staging by default
   - "**region**" is the aws region you want to deploy your application
 
 ## 4> ecs stack
-
-### step 1:
 
 - build docker image
 - update details inside push
