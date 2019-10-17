@@ -8,7 +8,7 @@
 - git
 - code commit access
 
-**_please note that 4 cloudformation stacks needs to deployed in total_**
+**_please note that 4 cloudformation stacks need to deployed in total_**
 
 # Repo stacks
 
@@ -48,13 +48,13 @@
   \
   code_commit_repo_url: https://git-codecommit.<region: example ap-south-1>.amazonaws.com/v1/repos/<example:projectrt-codecommit-node-react>
 
-  you can also find it in code commit and just use it for now.
+  you can also find it in code commit (aws console) and just use it for now.
 
   ```bash
   git push --set-upstream <origin_name> <branch_name>
   ```
 
-currently s3 rests in master and ecs in staging by default
+currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both deployment
 
 ## 2> s3 stack
 
