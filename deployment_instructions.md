@@ -109,7 +109,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
 - build docker image
 - update details inside push
   \
-  Example
+   Example
 
   ```bash
   ./service_scripts/push.sh  profile="default" region="ap-south-1" localImage="ecr-node-react" ecrRepo="ecr-repo-name"
@@ -121,10 +121,9 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**region**" is the aws region you want to deploy your application
   - "**localImage**" is the image built using docker build
   - "**ecrRepo**" the remote rcr repo created for hosting the localImage)
+    \
 
-\
-
-- To create ecs stack
+* To create ecs stack
   \
    Example
 
