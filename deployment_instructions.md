@@ -123,4 +123,4 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
 aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucket/templates --recursive
 ```
 
-- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment)
+- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment) and keep note of that s3 bucket, the default nomenclature is ecs-configuration and the rest of the process is same as above
