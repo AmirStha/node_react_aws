@@ -122,6 +122,8 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**localImage**" is the image built using docker build
   - "**ecrRepo**" the remote rcr repo created for hosting the localImage)
 
+\
+
 - To create ecs stack
   \
    Example
