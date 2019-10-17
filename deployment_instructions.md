@@ -8,7 +8,7 @@
 - git
 - code commit access
 
-**_please note that 4 cloudformation stacks needs to deployed in total_**
+**_please note that 4 cloudformation stacks need to deployed in total_**
 
 # Repo stacks
 
@@ -48,13 +48,13 @@
   \
   code_commit_repo_url: https://git-codecommit.<region: example ap-south-1>.amazonaws.com/v1/repos/<example:projectrt-codecommit-node-react>
 
-  you can also find it in code commit and just use it for now.
+  you can also find it in code commit (aws console) and just use it for now.
 
   ```bash
   git push --set-upstream <origin_name> <branch_name>
   ```
 
-currently s3 rests in master and ecs in staging by default
+currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both deployment
 
 ## 2> s3 stack
 
@@ -123,4 +123,4 @@ currently s3 rests in master and ecs in staging by default
 aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucket/templates --recursive
 ```
 
-- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment)
+- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment) and keep note of that s3 bucket, the default nomenclature is ecs-configuration and the rest of the process is same as above
