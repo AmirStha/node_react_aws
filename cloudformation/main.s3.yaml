@@ -1,0 +1,317 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  CustomS3BucketName:
+    Type: String
+    Default: 'node-react-s3'
+    Description: 'This is the bucket that is going to host the node react app'
+  CustomDeploymentTriggerBranch:
+    Type: String
+    Description: "The branch that is to be used for CodeBuild"
+    Default: "master"
+  CodeBuildRepositoryBranch:
+    Type: String
+    Description: 'The branch that is to be used for CodeBuild'
+    Default: 'staging'
+  AWSUserName:
+    Type: String
+    Description: "The user for principal aws ecr repo policy document"
+    Default: "amir"
+  BitNodeToken:
+    Type: String
+    Description: 'The branch that is to be used for CodeBuild'
+    Default: 'test'
+  TeamName:
+    Type: String
+    Description: 'Team deploying the stack'
+    Default: 'test'
+Resources:
+  BottleDeployBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-${CustomS3BucketName}
+      WebsiteConfiguration:
+        IndexDocument: index.html
+  BucketPolicyPublic:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref BottleDeployBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Principal: '*'
+            Action: 's3:GetObject'
+            Effect: Allow
+            Resource: !Sub '${BottleDeployBucket.Arn}/*'
+  BottleDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      DistributionConfig:
+        Origins:
+          - # Use the BottleDeployBucket as the CDN origin
+            DomainName: !GetAtt BottleDeployBucket.DomainName
+            Id: !Ref BottleDeployBucket
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultRootObject: index.html
+        Enabled: true
+        # Configure the caching behavior for our CDN
+        DefaultCacheBehavior:
+          MinTTL: 86400 # 1 day
+          MaxTTL: 31536000 # 1 year
+          ForwardedValues:
+            QueryString: true
+          TargetOriginId: !Ref BottleDeployBucket
+          ViewerProtocolPolicy: 'redirect-to-https'
+  BottleCodeBuild:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      Name: !Sub ${AWS::StackName}-CodeBuild
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        # The downloaded source code for the build will come from CodePipeline
+        Type: CODEPIPELINE
+        Name: MyProject
+      Source: 
+        Type: CODEPIPELINE
+      Environment:
+        # Linux container with node installed
+        ComputeType: BUILD_GENERAL1_SMALL
+        Type: LINUX_CONTAINER
+        Image: "aws/codebuild/nodejs:8.11.0"
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub |
+          version: 0.1
+          phases:
+            pre_build:
+              commands:
+                - echo Installing source NPM dependencies...
+                - echo "Adding bit.dev to npm registry"
+                - echo "always-auth=true" >> ~/.npmrc
+                - echo "@bit:registry=https://node.bit.dev" >> ~/.npmrc
+                - echo "//node.bit.dev/:_authToken=${BitNodeToken}" >> ~/.npmrc
+                - echo "Completed adding bit.dev to npm registry"
+                - npm config ls
+                - echo "Show root npmrc"
+                - echo "Installing dependencies"
+                - echo "And deploying ..."
+                - npm install
+            build:
+              commands:
+                - echo Build started on `date`
+                - echo "Building"
+                - cat ~/.npmrc
+                - npm run-script build
+            post_build:
+              commands:
+                # copy the contents of /build to S3
+                - aws s3 cp --recursive --acl public-read ./build s3://${BottleDeployBucket}/ 
+                # set the cache-control headers for service-worker.js to prevent
+                # browser caching
+                - >
+                  aws s3 cp --acl public-read 
+                  --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
+                  ./build/service-worker.js s3://${BottleDeployBucket}/
+                # set the cache-control headers for index.html to prevent
+                # browser caching
+                - >
+                  aws s3 cp --acl public-read 
+                  --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
+                  ./build/index.html s3://${BottleDeployBucket}/
+                # invalidate the CloudFront cache for index.html and service-worker.js
+                # to force CloudFront to update its edge locations with the new versions
+                - >
+                  aws cloudfront create-invalidation --distribution-id ${BottleDistribution} 
+                  --paths /index.html /service-worker.js
+          artifacts:
+            files:
+              - '**/*'
+            base-directory: build
+  # IAM role that allows CodeBuild to interact with S3, CloudWatch, and CloudFront
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - 
+            Effect: Allow
+            Principal:
+              Service:
+                - "codebuild.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: /service-role/
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: Allow
+                Action:
+                  - "codecommit:GetBranch"
+                  - "codecommit:GetCommit"
+                  - "codecommit:UploadArchive"
+                  - "codecommit:GetUploadArchiveStatus"
+                  - "codecommit:CancelUploadArchive"
+                Resource: 
+                  - !ImportValue BottleCodeCommitNodeReactRepoArn
+                  - !Join ['', [!ImportValue BottleCodeCommitNodeReactRepoArn, "/*"]]
+              - 
+                Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:GetBucketVersioning"
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                Resource: 
+                  - !GetAtt BottleDeployBucket.Arn
+                  - !Join ['', [!GetAtt BottleDeployBucket.Arn, "/*"]]
+                  - !GetAtt PipelineBucket.Arn
+                  - !Join ['', [!GetAtt PipelineBucket.Arn, "/*"]]
+              -
+                Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  - "cloudfront:CreateInvalidation"
+                Resource:
+                  - "*"
+  BottleCodePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      RoleArn: !GetAtt CodePipeLineRole.Arn
+      Name: !Sub ${AWS::StackName}-CodePipeline
+      ArtifactStore:
+        Location: !Ref PipelineBucket
+        Type: S3
+      Stages:
+        - 
+          Name: Source
+          Actions: 
+            - 
+              Name: SourceAction
+              ActionTypeId: 
+                Category: Source
+                Owner: AWS
+                Provider: CodeCommit
+                Version: 1
+              OutputArtifacts: 
+                - 
+                  Name: MyApp
+              Configuration:
+                RepositoryName: !ImportValue BottleCodeCommitNodeReactRepoName
+                BranchName: !Ref CodeBuildRepositoryBranch
+
+        - 
+          Name: Build
+          Actions: 
+            - 
+              Name: BuildAction
+              ActionTypeId: 
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              InputArtifacts: 
+                - 
+                  Name: MyApp
+              OutputArtifacts: 
+                - 
+                  Name: MyAppBuild
+              Configuration:
+                ProjectName: !Ref BottleCodeBuild
+
+  CodePipeLineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - 
+            Effect: Allow
+            Principal:
+              Service:
+                - "codepipeline.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: Allow
+                Action:
+                  - "codecommit:GetBranch"
+                  - "codecommit:GetCommit"
+                  - "codecommit:UploadArchive"
+                  - "codecommit:GetUploadArchiveStatus"
+                  - "codecommit:CancelUploadArchive"
+                Resource: 
+                  - !ImportValue BottleCodeCommitNodeReactRepoArn
+                  - !Join ['', [!ImportValue BottleCodeCommitNodeReactRepoArn, "/*"]]
+              - 
+                Effect: Allow  
+                Action:
+                  - "codebuild:BatchGetBuilds"
+                  - "codebuild:StartBuild"
+                Resource: "*"
+              - 
+                Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:GetBucketVersioning"
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                Resource: 
+                  - !GetAtt PipelineBucket.Arn
+                  - !Join ['', [!GetAtt PipelineBucket.Arn, "/*"]]
+  # Code commit build artifacts
+  # BottleCodeCommitRepo: 
+  #   Type: AWS::CodeCommit::Repository
+  #   Properties:
+  #     RepositoryName: !Sub  ${AWS::StackName}-${CodeCommitRepositoryName}
+  #     RepositoryDescription: Default CodeCommit repo for Bottle Boilerplate stack
+
+  PipelineBucket: 
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-cicd-pipeline-bucket
+
+# Outputs:
+#   CodeCommitRepoName:
+#     Description: "Repo to be shared by 2 deployment stack"
+#     Value: !GetAtt BottleCodeCommitRepo.Name
+#     Export:
+#       Name: BottleCodeCommitNodeReactRepo
+  

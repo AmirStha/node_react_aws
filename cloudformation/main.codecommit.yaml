@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  CodeCommitRepositoryName:
+    Type: String
+    Description: "The name of the repository"
+    Default: "node-react"
+
+  BitNodeToken:
+    Type: String
+    Description: "Bit Token for bit"
+    Default: "test"
+
+  CustomDeploymentTriggerBranch:
+    Type: String
+    Description: "The branch that is to be used for CodeBuild"
+    Default: "master"
+
+  CodeBuildRepositoryBranch:
+    Type: String
+    Description: "The branch that is to be used for CodeBuild"
+    Default: "staging"
+
+  TeamName:
+    Type: String
+    Description: "Team deploying the stack"
+    Default: "test"
+
+  AWSUserName:
+    Type: String
+    Description: "The user for principal aws ecr repo policy document"
+    Default: "amir"
+
+Resources:
+  BottleCodeCommitRepo:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: !Sub ${AWS::StackName}-${CodeCommitRepositoryName}
+      RepositoryDescription: Default CodeCommit repo for Bottle Boilerplate stack
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+
+Outputs:
+  CodeCommitRepoName:
+    Description: "Repo Name to be shared by 2 deployment stack"
+    Value: !GetAtt BottleCodeCommitRepo.Name
+    Export:
+      Name: BottleCodeCommitNodeReactRepoName
+  CodeCommitRepoArn:
+    Description: "Repo Arn to be shared by 2 deployment stack"
+    Value: !GetAtt BottleCodeCommitRepo.Arn
+    Export:
+      Name: BottleCodeCommitNodeReactRepoArn
+#TODO

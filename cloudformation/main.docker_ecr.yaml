@@ -1,0 +1,355 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  CustomECRRepoName:
+    Type: String
+    Default: "node-react-ecr"
+    Description: "This is the ecr repo that is going to host the repo for the node react app"
+  CustomDeploymentTriggerBranch:
+    Type: String
+    Description: "The branch that is to be used for CodeBuild"
+    Default: "master"
+  CodeBuildRepositoryBranch:
+    Type: String
+    Description: "The branch that is to be used for CodeBuild"
+    Default: "staging"
+  TeamName:
+    Type: String
+    Description: "Team deploying the stack"
+    Default: "test"
+  CustomDeploymentTriggerImageTag:
+    Type: String
+    Description: "The branch that is to be used for CodeBuild"
+    Default: "latest"
+  BitNodeToken:
+    Type: String
+    Description: "The Bit Node token for bit."
+    Default: "test"
+  AWSUserName:
+    Type: String
+    Description: "The user for principal aws ecr repo policy document"
+    Default: "amir"
+Resources:
+  # PipelineBucket:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     BucketName: !Sub ${AWS::StackName}-cicd-pipeline-bucket
+
+  # CodePipeLineRole:
+  #   Type: AWS::IAM::Role
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         -
+  #           Effect: Allow
+  #           Principal:
+  #             Service:
+  #               - "codepipeline.amazonaws.com"
+  #           Action:
+  #             - "sts:AssumeRole"
+  #     Policies:
+  #       - PolicyName: root
+  #         PolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             -
+  #               Effect: Allow
+  #               Action:
+  #                 - "codecommit:GetBranch"
+  #                 - "codecommit:GetCommit"
+  #                 - "codecommit:UploadArchive"
+  #                 - "codecommit:GetUploadArchiveStatus"
+  #                 - "codecommit:CancelUploadArchive"
+  #               Resource: "*"
+  #             -
+  #               Effect: Allow
+  #               Action:
+  #                 - "codebuild:BatchGetBuilds"
+  #                 - "codebuild:StartBuild"
+  #               Resource: "*"
+  #             -
+  #               Effect: Allow
+  #               Action:
+  #                 - "s3:GetObject"
+  #                 - "s3:GetObjectVersion"
+  #                 - "s3:GetBucketVersioning"
+  #                 - "s3:PutObject"
+  #                 - "s3:PutObjectAcl"
+  #               Resource:
+  #                 - !GetAtt PipelineBucket.Arn
+  #                 - !Join ['', [!GetAtt PipelineBucket.Arn, "/*"]]
+  #             -
+  #               Effect: Allow
+  #               Action:
+  #                 - "ecr:GetAuthorizationToken"
+  #                 - "ecr:BatchCheckLayerAvailability"
+  #                 - "ecr:GetDownloadUrlForLayer"
+  #                 - "ecr:GetRepositoryPolicy"
+  #                 - "ecr:DescribeRepositories"
+  #                 - "ecr:ListImages"
+  #                 - "ecr:DescribeImages"
+  #                 - "ecr:BatchGetImage"
+  #                 - "ecr:InitiateLayerUpload"
+  #                 - "ecr:UploadLayerPart"
+  #                 - "ecr:CompleteLayerUpload"
+  #                 - "ecr:PutImage"
+  #               Resource: "*"
+
+  # BottleCodePipeline:
+  #   Type: AWS::CodePipeline::Pipeline
+  #   Properties:
+  #     RoleArn: !GetAtt CodePipeLineRole.Arn
+  #     Name: !Sub ${AWS::StackName}-CodePipeline
+  #     ArtifactStore:
+  #         Location: !Ref PipelineBucket
+  #         Type: S3
+  #     Stages:
+  #       -
+  #         Name: Source
+  #         Actions:
+  #           -
+  #             Name: SourceAction
+  #             ActionTypeId:
+  #               Category: Source
+  #               Owner: AWS
+  #               Provider: CodeCommit
+  #               Version: 1
+  #             OutputArtifacts:
+  #               -
+  #                 Name: !Sub ${AWS::StackName}App
+  #             Configuration:
+  #               RepositoryName: !ImportValue BottleCodeCommitNodeReactRepo
+  #               BranchName: !Ref CustomDeploymentTriggerBranch
+  #           -
+  #             Name: !Sub ${AWS::StackName}ECRSourceAction
+  #             ActionTypeId:
+  #               Category: Source
+  #               Owner: AWS
+  #               Provider: ECR
+  #               Version: 1
+  #             OutputArtifacts:
+  #               -
+  #                 Name: !Sub ${AWS::StackName}ECRApp
+  #             Configuration:
+  #               RepositoryName: !Sub ${AWS::StackName}-${CustomECRRepoName}
+  #               ImageTag: !Ref CustomDeploymentTriggerImageTag
+  #       -
+  #         Name: Build
+  #         Actions:
+  #           -
+  #             Name: BuildAction
+  #             ActionTypeId:
+  #               Category: Build
+  #               Owner: AWS
+  #               Version: 1
+  #               Provider: CodeBuild
+  #             InputArtifacts:
+  #               -
+  #                 Name: !Sub ${AWS::StackName}App
+  #             OutputArtifacts:
+  #               -
+  #                 Name: !Sub ${AWS::StackName}AppBuild
+  #             Configuration:
+  #               ProjectName: !Ref BottleCodeBuild
+  # BottleCodeBuild:
+  #   Type: AWS::CodeBuild::Project
+  #   Properties:
+  #     Name: !Sub ${AWS::StackName}-CodeBuild
+  #     ServiceRole: !GetAtt CodeBuildRole.Arn
+  #     Artifacts:
+  #       # The downloaded source code for the build will come from CodePipeline
+  #       Type: CODEPIPELINE
+  #       Name: !Sub ${AWS::StackName}Project
+  #     Source:
+  #       Type: CODEPIPELINE
+  #     Environment:
+  #       # Linux container with node installed
+  #       ComputeType: BUILD_GENERAL1_SMALL
+  #       Type: LINUX_CONTAINER
+  #       Image: "aws/codebuild/docker:17.09.0"
+  #       PrivilegedMode: true
+  #       EnvironmentVariables:
+  #         - Name: BitNodeToken
+  #           Type: PLAINTEXT
+  #           Value: !Ref BitNodeToken
+  #         - Name: AWS_DEFAULT_REGION
+  #           Value: !Ref AWS::Region
+  #         - Name: REPOSITORY_URI
+  #           Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${BottleECRRepo}
+  #     Source:
+  #       Type: CODEPIPELINE
+  #       BuildSpec: "buildspec.docker_ecr.yaml"
+  # CodeBuildRole:
+  #   Type: AWS::IAM::Role
+  #   Properties:
+  #     Tags:
+  #       - Key: 'projectRT'
+  #         Value: 'projectRT'
+  #     AssumeRolePolicyDocument:
+  #       Version: '2012-10-17'
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal:
+  #             Service:
+  #               - 'codebuild.amazonaws.com'
+  #           Action:
+  #             - 'sts:AssumeRole'
+  #     Path: /service-role/
+  #     RoleName: !Sub ${AWS::StackName}-CodebuildRole
+  #     Policies:
+  #       - PolicyName: root
+  #         PolicyDocument: |
+  #           {
+  #             "Version": "2012-10-17",
+  #             "Statement": [
+  #               {
+  #                 "Sid": "CloudWatchLogsPolicy",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "logs:CreateLogGroup",
+  #                   "logs:CreateLogStream",
+  #                   "logs:PutLogEvents"
+  #                 ],
+  #                 "Resource": [
+  #                   "*"
+  #                 ]
+  #               },
+  #               {
+  #                 "Sid": "CodeCommitPolicy",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "codecommit:GitPull"
+  #                 ],
+  #                 "Resource": [
+  #                   "*"
+  #                 ]
+  #               },
+  #               {
+  #                 "Sid": "S3GetObjectPolicy",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "s3:GetObject",
+  #                   "s3:GetObjectVersion"
+  #                 ],
+  #                 "Resource": [
+  #                   "*"
+  #                 ]
+  #               },
+  #               {
+  #                 "Sid": "S3PutObjectPolicy",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "s3:PutObject"
+  #                 ],
+  #                 "Resource": [
+  #                   "*"
+  #                 ]
+  #               },
+  #               {
+  #                 "Sid": "ECRPullPolicy",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "ecr:BatchCheckLayerAvailability",
+  #                   "ecr:GetDownloadUrlForLayer",
+  #                   "ecr:BatchGetImage"
+  #                 ],
+  #                 "Resource": [
+  #                   "*"
+  #                 ]
+  #               },
+  #               {
+  #                 "Sid": "ECRAuthPolicy",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "ecr:GetAuthorizationToken"
+  #                 ],
+  #                 "Resource": [
+  #                   "*"
+  #                 ]
+  #               },
+  #               {
+  #                 "Sid": "S3BucketIdentity",
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                   "s3:GetBucketAcl",
+  #                   "s3:GetBucketLocation"
+  #                 ],
+  #                 "Resource":
+  #                   "*"
+  #               },
+  #               {
+  #                 "Effect": "Allow",
+  #                 "Action": [
+  #                     "ecr:GetAuthorizationToken",
+  #                     "ecr:BatchCheckLayerAvailability",
+  #                     "ecr:GetDownloadUrlForLayer",
+  #                     "ecr:GetRepositoryPolicy",
+  #                     "ecr:DescribeRepositories",
+  #                     "ecr:ListImages",
+  #                     "ecr:DescribeImages",
+  #                     "ecr:BatchGetImage",
+  #                     "ecr:InitiateLayerUpload",
+  #                     "ecr:UploadLayerPart",
+  #                     "ecr:CompleteLayerUpload",
+  #                     "ecr:PutImage"
+  #                 ],
+  #                 "Resource": "*"
+  #               }
+  #             ]
+  #           }
+  BottleECRRepo:
+    Type: AWS::ECR::Repository
+    Properties:
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+                {
+                    "rulePriority": 1,
+                    "description": "Expire images older than 14 days",
+                    "selection": {
+                        "tagStatus": "untagged",
+                        "countType": "sinceImagePushed",
+                        "countUnit": "days",
+                        "countNumber": 14
+                    },
+                    "action": {
+                        "type": "expire"
+                    }
+                }
+            ]
+          }
+      RepositoryName: !Sub ${AWS::StackName}-${CustomECRRepoName}
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowPushPull
+            Effect: Allow
+            Principal:
+              AWS:
+                - !Sub arn:aws:iam::${AWS::AccountId}:user/${AWSUserName}
+            Action:
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+
+Outputs:
+  BottleECRRepo:
+    Description: "Repo Name of ECR"
+    Value: !Sub ${AWS::StackName}-${CustomECRRepoName}
+    Export:
+      Name: BottleECRRepoName
+  BottleECRRepoArn:
+    Description: "Repo Arn of ECR"
+    Value: !GetAtt BottleECRRepo.Arn
+    Export:
+      Name: BottleECRRepoArn
