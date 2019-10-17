@@ -36,7 +36,7 @@ aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucke
   - "**region**" is the aws region you want to deploy your application
     \
 
-* check if resources are created after resources are created
+* check if resources are created in aws console(Cloudformation Section)
 * push the code to the code commit repo(manual for now for first time)
 * To push follow the two steps:
 
@@ -44,7 +44,8 @@ aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucke
   git remote add <origin_name> <code_commit_repo_url>
   ```
 
-  example
+  Example
+  /
   code_commit_repo_url: https://git-codecommit.<region: example ap-south-1>.amazonaws.com/v1/repos/<example:projectrt-codecommit-node-react>
 
   you can also find it in code commit and just use it for now.
