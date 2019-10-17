@@ -26,7 +26,14 @@ aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucke
   ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1"
   ```
 
-  replace the value inside with your required inputs, user can be only those accounts with access to aws resources, for now shailendra and amir are valid and tested. the yaml_file is the file used for the task for codecommit is main.codecommit.yaml.
+  replace the value inside with your required inputs,
+
+  - "**stack_name**" should be unique
+  - "**yaml_file**" is the file used for the task for codecommit is main.codecommit.yaml
+  - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
+  - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
+  - "**token**" is the bit node token, for now you can you the one in the example
+  - "**region**" is the aws region you want to deploy your application
 
 - check if resources are created after resources are created
 - push the code to the code commit repo(manual for now for first time)
