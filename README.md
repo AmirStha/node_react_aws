@@ -1,4 +1,4 @@
-# React application with Express server
+# React application with CICD implementation
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). The server can be proxied via the `proxy` key in `package.json`.
 
