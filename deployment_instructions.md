@@ -14,7 +14,9 @@
 
   Example
 
-  \$ chmod +x <script_file>.sh
+  ```bash
+    $ chmod +x <script_file>.sh
+  ```
 
 - For scripts to work you must be in the root directory.
 
