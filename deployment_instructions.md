@@ -71,17 +71,16 @@
 
 currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both the deployments
 
-## 2. S3 Stack
+## 3. ECR Stack
 
-- To create the stack
-  \
-   Example
+- To create ecr repo
+  Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
   ```
 
-  replace the value inside with your required inputs:
+  replace the value inside with your required inputs
 
   - "**stack_name**" should be unique
   - "**yaml_file**" is the file used for the task for codecommit is main.s3.yaml
@@ -95,16 +94,17 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
 
 # Deployment Stacks
 
-## 3. ECR Stack
+## 3. S3 Stack
 
-- To create ecr repo
-  Example
+- To create the stack
+  \
+   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
+  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
   ```
 
-  replace the value inside with your required inputs
+  replace the value inside with your required inputs:
 
   - "**stack_name**" should be unique
   - "**yaml_file**" is the file used for the task for codecommit is main.s3.yaml
