@@ -8,6 +8,16 @@
 - git
 - code commit access
 
+## Note:
+
+- You need to make the scripts file available inside service_scripts executable. To do So
+
+Example
+
+\$ chmod +x <script_file>.sh
+
+- For scripts to work you must be in the root directory.
+
 **_please note that 4 cloudformation stacks need to be deployed in total_**
 
 # Repo Stacks
@@ -146,7 +156,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
 ## Deploy in a new AWS Account
 
 ```bash
-aws s3 cp ./cloudformation/templates_ecs s3://pj-test-ecs-deploy-resources-bucket/templates --recursive
+aws s3 cp ./cloudformation/templates_ecs s3://bottle-ecs-deploy-resources-bucket/templates --recursive
 ```
 
-- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment) and keep note of that s3 bucket, the default nomenclature is ecs-configuration and the rest of the process is same as above
+- If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment) and keep note of that s3 bucket, the default nomenclature is "**bottle-ecs-deploy-resources-bucket**" and the rest of the process is same as above
