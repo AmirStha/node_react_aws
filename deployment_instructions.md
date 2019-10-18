@@ -12,9 +12,9 @@
 
 - You need to make the scripts file available inside service_scripts executable. To do So
 
-Example
+  Example
 
-\$ chmod +x <script_file>.sh
+  \$ chmod +x <script_file>.sh
 
 - For scripts to work you must be in the root directory.
 
