@@ -71,7 +71,7 @@
 
 currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both the deployments
 
-## 3. ECR Stack
+## 2. ECR Stack
 
 - To create ecr repo
   Example
