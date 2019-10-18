@@ -20,7 +20,7 @@
 
 - For scripts to work you must be in the root directory.
 
-# **_please note that 4 cloudformation stacks need to be deployed in total_**
+**_please note that 4 cloudformation stacks need to be deployed in total_**
 
 # Repo Stacks
 
