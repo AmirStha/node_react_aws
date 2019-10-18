@@ -50,7 +50,7 @@ Example
     \
 
 * check if resources are created in aws console(Cloudformation Section)
-* push the code to the code commit repo(manual for now for first time)
+* push the code to the code commit repo(manual for now on the first time)
 * To push follow the two steps:
 
   ```bash
@@ -61,13 +61,13 @@ Example
   \
   code_commit_repo_url: https://git-codecommit.<region: example ap-south-1>.amazonaws.com/v1/repos/<example:projectrt-codecommit-node-react>
 
-  you can also find it in code commit (aws console) and just use it for now.
+  you can also find it in code commit (aws console), just use it for now.
 
   ```bash
   git push --set-upstream <origin_name> <branch_name>
   ```
 
-currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both deployment
+currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both the deployments
 
 ## 2. S3 Stack
 
