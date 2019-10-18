@@ -8,15 +8,15 @@
 - git
 - code commit access
 
-**_please note that 4 cloudformation stacks need to deployed in total_**
+**_please note that 4 cloudformation stacks need to be deployed in total_**
 
-# Repo stacks
+# Repo Stacks
 
 <!-- ## Common Steps
 
 - ./service_scripts/create_stack.sh shailendra-s3-deploy-ecs main.ecs.yaml 7b76e084-98d0-4cf6-852b-50aabea4e593(where the three parameters are stackname, yamlConfigFile, bitToken) -->
 
-## 1> codecommit stack
+## 1. Codecommit Stack
 
 - To create code commit repo
 
@@ -59,7 +59,7 @@
 
 currently cicd trigger branch for s3 deployment is **master** and for ecs deployment is **staging** by default and one common code commit repo is used for both deployment
 
-## 2> s3 stack
+## 2. S3 Stack
 
 - To create the stack
   \
@@ -81,9 +81,9 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**ecs_branch**" is the branch from where the ecs deployed starts
   - "**team**" the team to which the current user belongs to(you)
 
-# Deployment Stack
+# Deployment Stacks
 
-## 3> ecr stack
+## 3. ECR Stack
 
 - To create ecr repo
   Example
@@ -104,7 +104,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**ecs_branch**" is the branch from where the ecs deployed starts
   - "**team**" the team to which the current user belongs to(you)
 
-## 4> ecs stack
+## 4. ECS Stack
 
 - build docker image
 - update details inside push
