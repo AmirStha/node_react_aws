@@ -37,7 +37,7 @@
   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="bit-token" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
   ```
 
   replace the value inside with your required inputs,
@@ -83,7 +83,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="bit-token" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
   ```
 
   replace the value inside with your required inputs
@@ -109,7 +109,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
    Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
+  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="bit-token" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
   ```
 
   replace the value inside with your required inputs:
@@ -143,7 +143,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
    Example
 
   ```bash
-  ./service_scripts/push.sh  profile="default" region="ap-south-1" localImage="ecr-node-react" ecrRepo="ecr-repo-name"
+  ./service_scripts/push.sh  profile="default" region="ap-south-1" localImage="ecr-node-react" ecrRepo="ecr-repo full url"
   ```
 
   replace the value inside with your required inputs
@@ -151,7 +151,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
   - "**region**" is the aws region you want to deploy your application
   - "**localImage**" is the image built using docker build
-  - "**ecrRepo**" the remote rcr repo created for hosting the localImage)
+  - "**ecrRepo**" the remote ecr repo created for hosting the localImage)
     \
 
 * To create ecs stack
@@ -159,7 +159,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
    Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.ecs.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.ecs.yaml" profile="default" user="shailendra" token="bit-token" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
   ```
 
   replace the value inside with your required inputs
