@@ -128,7 +128,16 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
 
 ## 4. ECS Stack
 
+**_Please note the localImage for push and build must be same._**
+
 - build docker image
+  \
+   Example
+
+  ```bash
+  ./service_scripts/build.sh   localImage="ecr-node-react" token="bit-token"
+  ```
+
 - update details inside push
   \
    Example
