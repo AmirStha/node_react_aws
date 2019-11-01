@@ -10,7 +10,7 @@ Parameters:
       - EC2
   TemplateBucket:
     Type: String
-    Default: shailendra-test-cfn-resources
+    Default: ecs-configuration-node
     Description: >
       The S3 bucket from which to fetch the templates used by this stack.
   BitNodeToken:
