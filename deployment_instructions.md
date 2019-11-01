@@ -61,10 +61,11 @@
   git remote add <origin_name> <code_commit_repo_url>
   ```
 
-* please push your codes to branch master and staging for the stack to perform as expected.
+* please push your codes to branch "**master**" and "**staging**" for the stack to perform as expected.
+
   Example
   \
-  code_commit_repo_url: https://git-codecommit.<region: example ap-south-1>.amazonaws.com/v1/repos/<example:projectrt-codecommit-node-react>
+   code_commit_repo_url: https://git-codecommit.<region: example ap-south-1>.amazonaws.com/v1/repos/<example:projectrt-codecommit-node-react>
 
   you can also find it in code commit (aws console), just use it for now.
 
