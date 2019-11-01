@@ -22,11 +22,11 @@
 
 **_please note that:_**
 
-**_4 cloudformation stacks need to be deployed in total._**
+- **_4 cloudformation stacks need to be deployed in total._**
 
-**_the stackname must be unique and use your own region and username._**
+- **_the stackname must be unique and use your own region and username._**
 
-**_after logging in to bit via cli look into your .npmrc file for bit-token._**
+- **_after logging in to bit via cli look into your .npmrc file for bit-token._**
 
 # Repo Stacks
 
