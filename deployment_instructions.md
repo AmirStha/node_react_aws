@@ -20,9 +20,11 @@
 
 - For scripts to work you must be in the root directory.
 
-**_please note that 4 cloudformation stacks need to be deployed in total_**
+**_please note that:_**
 
-**_please note that the stackname must be unique and use your own region and username._**
+- 4 cloudformation stacks need to be deployed in total
+- the stackname must be unique and use your own region and username.
+- after logging in to bit via cli look into your .npmrc file for bit-token
 
 # Repo Stacks
 
