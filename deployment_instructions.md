@@ -35,7 +35,7 @@
   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.codecommit.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=102
   ```
 
   replace the value inside with your required inputs,
@@ -49,6 +49,8 @@
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
   - "**team**" the team to which the current user belongs to(you)
+  - "**ecs_cpu**" cpu for ecs fargate or ec2
+  - "**ecs_memory**" memory for ecs fargate or ec2
     \
 
 * check if resources are created in aws console(Cloudformation Section)
@@ -77,7 +79,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecr-repo" yaml_file="main.docker_ecr.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=102
   ```
 
   replace the value inside with your required inputs
@@ -91,6 +93,8 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
   - "**team**" the team to which the current user belongs to(you)
+  - "**ecs_cpu**" cpu for ecs fargate or ec2
+  - "**ecs_memory**" memory for ecs fargate or ec2
 
 # Deployment Stacks
 
@@ -101,7 +105,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
    Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
+  ./service_scripts/create_stack.sh stack_name="projectrt-s3-deploy" yaml_file="main.s3.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=102
   ```
 
   replace the value inside with your required inputs:
@@ -115,6 +119,8 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
   - "**team**" the team to which the current user belongs to(you)
+  - "**ecs_cpu**" cpu for ecs fargate or ec2
+  - "**ecs_memory**" memory for ecs fargate or ec2
 
 ## 4. ECS Stack
 
@@ -140,7 +146,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
    Example
 
   ```bash
-  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.ecs.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt"
+  ./service_scripts/create_stack.sh stack_name="projectrt-ecs-fargate-deploy" yaml_file="main.ecs.yaml" profile="default" user="shailendra" token="7b76e084-98d0-4cf6-852b-50aabea4e593" region="ap-south-1" s3_branch="staging" ecs_branch="master" team="rt" ecs_cpu=512 ecs_memory=1024
   ```
 
   replace the value inside with your required inputs
@@ -154,6 +160,8 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
   - "**team**" the team to which the current user belongs to(you)
+  - "**ecs_cpu**" cpu for ecs fargate or ec2
+  - "**ecs_memory**" memory for ecs fargate or ec2
 
 ## Deploy in a new AWS Account
 
