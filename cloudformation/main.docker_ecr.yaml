@@ -28,6 +28,14 @@ Parameters:
     Type: String
     Description: "The user for principal aws ecr repo policy document"
     Default: "amir"
+  MEMORY:
+    Type: Number
+    Description: "ECS STACK MEMORY"
+    Default: 1024
+  CPU:
+    Type: Number
+    Description: "ECS STACK CPU"
+    Default: 512
 Resources:
   # PipelineBucket:
   #   Type: AWS::S3::Bucket

@@ -26,6 +26,16 @@ Parameters:
     Description: "Team deploying the stack"
     Default: "test"
 
+  MEMORY:
+    Type: Number
+    Description: "ECS STACK MEMORY"
+    Default: 1024
+
+  CPU:
+    Type: Number
+    Description: "ECS STACK CPU"
+    Default: 512
+
   AWSUserName:
     Type: String
     Description: "The user for principal aws ecr repo policy document"

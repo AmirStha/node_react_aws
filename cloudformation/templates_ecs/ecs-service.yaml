@@ -1,0 +1,158 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  Cluster:
+    Type: String
+
+  DesiredCount:
+    Type: Number
+    Default: 1
+
+  LaunchType:
+    Type: String
+    Default: Fargate
+    AllowedValues:
+      - Fargate
+      - EC2
+
+  TargetGroup:
+    Type: String
+
+  TeamName:
+    Type: String
+    Description: "Team deploying the stack"
+    Default: "test"
+
+  AWSUserName:
+    Type: String
+    Description: "The user for principal aws ecr repo policy document"
+    Default: "amir"
+
+  MEMORY:
+    Type: String
+    Description: "ECS STACK MEMORY"
+    Default: 1024
+
+  CPU:
+    Type: String
+    Description: "ECS STACK CPU"
+    Default: 512
+
+  SourceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+
+  CustomContainerName:
+    Type: String
+    Default: "ecs-container-app"
+
+Conditions:
+  Fargate: !Equals [!Ref LaunchType, "Fargate"]
+
+  EC2: !Equals [!Ref LaunchType, "EC2"]
+
+Resources:
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /ecs/${AWS::StackName}
+
+  FargateService:
+    Type: AWS::ECS::Service
+    Condition: Fargate
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      Cluster: !Ref Cluster
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref TaskDefinition
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref SourceSecurityGroup
+          Subnets: !Ref Subnets
+      LoadBalancers:
+        - ContainerName: !Sub ${CustomContainerName}
+          ContainerPort: 3001
+          TargetGroupArn: !Ref TargetGroup
+
+  EC2Service:
+    Type: AWS::ECS::Service
+    Condition: EC2
+    Properties:
+      Tags:
+        - Key: "user"
+          Value: !Sub ${AWSUserName}
+        - Key: "team"
+          Value: !Sub ${TeamName}
+      Cluster: !Ref Cluster
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref TaskDefinition
+      LaunchType: EC2
+      LoadBalancers:
+        - ContainerName: !Sub ${CustomContainerName}
+          ContainerPort: 3001
+          TargetGroupArn: !Ref TargetGroup
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub ${AWS::StackName}
+      RequiresCompatibilities:
+        - !If [Fargate, "FARGATE", "EC2"]
+      Memory: !Sub ${MEMORY}
+      Cpu: !Sub ${CPU}
+      NetworkMode: !If [Fargate, "awsvpc", "bridge"]
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      ContainerDefinitions:
+        - Name: !Sub ${CustomContainerName}
+          #TODO: change this
+          Image: !Sub
+            - ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepoName}
+            - ECRRepoName: !ImportValue BottleECRRepoName
+          # EntryPoint:
+          #   - /usr/sbin/apache2
+          #   - -D
+          #   - FOREGROUND
+          Essential: true
+          Memory: !Sub ${MEMORY}
+          Cpu: !Sub ${CPU}
+          MountPoints:
+            - SourceVolume: my-vol
+              ContainerPath: /var/www/my-vol
+          PortMappings:
+            - ContainerPort: 3001
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref LogGroup
+              awslogs-stream-prefix: !Ref AWS::StackName
+      Volumes:
+        - Name: my-vol
+
+Outputs:
+  Service:
+    Value: !If [Fargate, !Ref FargateService, !Ref EC2Service]

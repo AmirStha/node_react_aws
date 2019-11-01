@@ -13,7 +13,9 @@ do
             token)        BIT_TOKEN=${VALUE} ;;  
             s3branch)     S3_BRANCH=${VALUE} ;; 
             ecsbranch)    ECS_BRANCH=${VALUE} ;; 
-            team)         TEAM=${VALUE} ;;   
+            team)         TEAM=${VALUE} ;; 
+            ecs_memory)   ECS_MEMORY=${VALUE} ;;   
+            ecs_cpu)      ECS_CPU=${VALUE} ;;   
             *)   
     esac    
 
@@ -30,6 +32,8 @@ echo "region = $REGION"
 echo "s3_branch" = $S3_BRANCH
 echo "ecs_branch" = $ECS_BRANCH
 echo "team" = $TEAM
+echo "ecs_cpu" = $ECS_CPU
+echo "ecs_memory" = $ECS_MEMORY
 
 echo "Creating a cloudformation stack ${STACK_NAME} using yaml ${YAML_FILE_NAME} from $PWD/cloudformation"
 
@@ -39,5 +43,5 @@ aws cloudformation create-stack \
 --stack-name ${STACK_NAME} \
 --region ${REGION} \
 --template-body file://${PWD}/cloudformation/${YAML_FILE_NAME} \
---parameters ParameterKey=BitNodeToken,ParameterValue=${BIT_TOKEN} ParameterKey=AWSUserName,ParameterValue=${USERNAME} ParameterKey=CodeBuildRepositoryBranch,ParameterValue=${S3_BRANCH} ParameterKey=CustomDeploymentTriggerBranch,ParameterValue=${ECS_BRANCH} ParameterKey=TeamName,ParameterValue=${TEAM}  
+--parameters ParameterKey=BitNodeToken,ParameterValue=${BIT_TOKEN} ParameterKey=AWSUserName,ParameterValue=${USERNAME} ParameterKey=CodeBuildRepositoryBranch,ParameterValue=${S3_BRANCH} ParameterKey=CustomDeploymentTriggerBranch,ParameterValue=${ECS_BRANCH} ParameterKey=TeamName,ParameterValue=${TEAM} ParameterKey=CPU,ParameterValue=${ECS_CPU} ParameterKey=MEMORY,ParameterValue=${ECS_MEMORY}  
 # --parameters ParameterKey=CustomS3BucketName,ParameterValue=pj-test-node-react 

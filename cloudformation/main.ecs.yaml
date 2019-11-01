@@ -10,7 +10,7 @@ Parameters:
       - EC2
   TemplateBucket:
     Type: String
-    Default: ecs-configuration-node
+    Default: shailendra-test-cfn-resources
     Description: >
       The S3 bucket from which to fetch the templates used by this stack.
   BitNodeToken:
@@ -29,6 +29,14 @@ Parameters:
     Type: String
     Description: "Team deploying the stack"
     Default: "test"
+  MEMORY:
+    Type: String
+    Description: "ECS STACK MEMORY"
+    Default: 1024
+  CPU:
+    Type: String
+    Description: "ECS STACK CPU"
+    Default: 512
   AWSUserName:
     Type: String
     Description: "The user for principal aws ecr repo policy document"
@@ -79,6 +87,8 @@ Resources:
         Subnets: !GetAtt BottleVPCStack.Outputs.Subnets
         TeamName: !Sub ${TeamName}
         AWSUserName: !Sub ${AWSUserName}
+        MEMORY: !Sub ${MEMORY}
+        CPU: !Sub ${CPU}
   BottleDeploymentPipeline:
     Type: AWS::CloudFormation::Stack
     Properties:

@@ -24,6 +24,14 @@ Parameters:
     Type: String
     Description: 'Team deploying the stack'
     Default: 'test'
+  MEMORY:
+    Type: Number
+    Description: "ECS STACK MEMORY"
+    Default: 1024
+  CPU:
+    Type: Number
+    Description: "ECS STACK CPU"
+    Default: 512
 Resources:
   BottleDeployBucket:
     Type: AWS::S3::Bucket
