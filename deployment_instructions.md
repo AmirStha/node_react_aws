@@ -22,6 +22,8 @@
 
 **_please note that 4 cloudformation stacks need to be deployed in total_**
 
+**_please note that the stackname must be unique and use your own region and username._**
+
 # Repo Stacks
 
 <!-- ## Common Steps
