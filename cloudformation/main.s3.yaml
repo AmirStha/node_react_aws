@@ -319,11 +319,11 @@ Resources:
 Outputs:
   BottleDeployBucket:
     Description: "Deployment Bucket Name for this current stack"
-    Value: !Sub ${AWS::StackName}-${CustomS3BucketName}
+    Value: !GetAtt BottleDeployBucket.Name
     Export:
       Name: BottleDeploymentBucketName
-  BottlePipelineBucket:
+  PipelineBucket:
     Description: "Pipeline Bucket Name for this current stack"
-    Value: !Sub ${AWS::StackName}-cicd-pipeline-bucket
+    Value: !GetAtt PipelineBucket.Name
     Export:
       Name: BottlePipelineBucketName
