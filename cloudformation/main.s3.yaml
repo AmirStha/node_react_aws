@@ -316,10 +316,14 @@ Resources:
     Properties:
       BucketName: !Sub ${AWS::StackName}-cicd-pipeline-bucket
 
-# Outputs:
-#   CodeCommitRepoName:
-#     Description: "Repo to be shared by 2 deployment stack"
-#     Value: !GetAtt BottleCodeCommitRepo.Name
-#     Export:
-#       Name: BottleCodeCommitNodeReactRepo
-  
+Outputs:
+  BottleDeployBucket:
+    Description: "Deployment Bucket Name for this current stack"
+    Value: !Sub ${AWS::StackName}-${CustomS3BucketName}
+    Export:
+      Name: BottleDeploymentBucketName
+  BottlePipelineBucket:
+    Description: "Pipeline Bucket Name for this current stack"
+    Value: !Sub ${AWS::StackName}-cicd-pipeline-bucket
+    Export:
+      Name: BottlePipelineBucketName
