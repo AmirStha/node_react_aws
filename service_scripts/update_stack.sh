@@ -11,8 +11,8 @@ do
             region)       REGION=${VALUE} ;;   
             user)         USERNAME=${VALUE} ;;     
             token)        BIT_TOKEN=${VALUE} ;; 
-            s3branch)     S3_BRANCH=${VALUE} ;; 
-            ecsbranch)    ECS_BRANCH=${VALUE} ;; 
+            s3_branch)     S3_BRANCH=${VALUE} ;; 
+            ecs_branch)    ECS_BRANCH=${VALUE} ;; 
             team)         TEAM=${VALUE} ;;  
             ecs_memory)   ECS_MEMORY=${VALUE} ;;   
             ecs_cpu)      ECS_CPU=${VALUE} ;;   
