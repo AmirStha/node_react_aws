@@ -37,3 +37,5 @@ The React application will run on port 3001.
 Instruction to use multiple aws accounts with codecommit
 
 https://aws.amazon.com/blogs/devops/using-git-with-aws-codecommit-across-multiple-aws-accounts/
+
+**_Easy to use Command Line Interface(CLI) feature coming soon_**
