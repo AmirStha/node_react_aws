@@ -38,4 +38,4 @@ Instruction to use multiple aws accounts with codecommit
 
 https://aws.amazon.com/blogs/devops/using-git-with-aws-codecommit-across-multiple-aws-accounts/
 
-:star2: :collision: **_Easy to use Command Line Interface(CLI) feature coming soon_** :star2: :collision:
+:sparkles: **_Easy to use Command Line Interface(CLI) feature coming soon_** :sparkles:
