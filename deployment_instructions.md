@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- aws cli
+- aws cli(installation: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 - nodejs
 - aws iam user with proper access
 - git
@@ -50,7 +50,7 @@
   - "**yaml_file**" is the file used for the task for codecommit is main.codecommit.yaml
   - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
-  - "**token**" is the bit node token, for now you can you the one in the example
+  - "**token**" is the bit node token, for now you can use "7b76e084-98d0-4cf6-852b-50aabea4e593"
   - "**region**" is the aws region you want to deploy your application
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
@@ -96,7 +96,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**yaml_file**" is the file used for the task for codecommit is main.s3.yaml
   - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
-  - "**token**" is the bit node token, for now you can you the one in the example
+  - "**token**" is the bit node token, for now you can use "7b76e084-98d0-4cf6-852b-50aabea4e593"
   - "**region**" is the aws region you want to deploy your application
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
@@ -122,7 +122,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**yaml_file**" is the file used for the task for codecommit is main.s3.yaml
   - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
-  - "**token**" is the bit node token, for now you can you the one in the example
+  - "**token**" is the bit node token, for now you can use "7b76e084-98d0-4cf6-852b-50aabea4e593"
   - "**region**" is the aws region you want to deploy your application
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
@@ -172,7 +172,7 @@ currently cicd trigger branch for s3 deployment is **master** and for ecs deploy
   - "**yaml_file**" is the file used for the task for codecommit is main.s3.yaml
   - "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
   - "**user**" can be only those accounts with access to aws resources, ( shailendra and amir are valid and tested aws users)
-  - "**token**" is the bit node token, for now you can you the one in the example
+  - "**token**" is the bit node token, for now you can use "7b76e084-98d0-4cf6-852b-50aabea4e593"
   - "**region**" is the aws region you want to deploy your application
   - "**s3_branch**" is the branch from where the s3 deployed starts
   - "**ecs_branch**" is the branch from where the ecs deployed starts
