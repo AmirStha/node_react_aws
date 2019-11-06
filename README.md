@@ -38,4 +38,10 @@ Instruction to use multiple aws accounts with codecommit
 
 https://aws.amazon.com/blogs/devops/using-git-with-aws-codecommit-across-multiple-aws-accounts/
 
-:mega: **_Easy to use Command Line Interface(CLI) feature coming soon_** :tada: :tada: :tada:
+<!-- :mega: **_Easy to use Command Line Interface(CLI) feature coming soon_** :tada: :tada: :tada: -->
+
+[**Please visit this link**](https://gitlab.com/bottle-tech/community/btl-cli#btl-cloudform) for using our new command line interface feature
+
+Please checkout to yamlupdate branch before using this feature
+
+Thanks for using this tools
