@@ -22,6 +22,11 @@ do
 
 done
 
+# filePath = "file://${PWD}/cloudformation/${YAML_FILE_NAME}";
+# stringContain() { [ -z "${2##*$1*}" ]; }
+# if stringContain 'o "Msys' `echo $uname -a`;then filePath="${PWD}/cloudformation/${YAML_FILE_NAME}";
+# fi
+# echo $filePath
 
 echo "STACK_NAME = $STACK_NAME"
 echo "YAML_FILE_NAME = $YAML_FILE_NAME"
@@ -42,6 +47,6 @@ aws cloudformation create-stack \
 --capabilities CAPABILITY_IAM \
 --stack-name ${STACK_NAME} \
 --region ${REGION} \
---template-body file://${PWD}/cloudformation/${YAML_FILE_NAME} \
+--template-body ${PWD}/cloudformation/${YAML_FILE_NAME} \
 --parameters ParameterKey=BitNodeToken,ParameterValue=${BIT_TOKEN} ParameterKey=AWSUserName,ParameterValue=${USERNAME} ParameterKey=CodeBuildRepositoryBranch,ParameterValue=${S3_BRANCH} ParameterKey=CustomDeploymentTriggerBranch,ParameterValue=${ECS_BRANCH} ParameterKey=TeamName,ParameterValue=${TEAM} ParameterKey=CPU,ParameterValue=${ECS_CPU} ParameterKey=MEMORY,ParameterValue=${ECS_MEMORY}  
 # --parameters ParameterKey=CustomS3BucketName,ParameterValue=pj-test-node-react 

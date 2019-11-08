@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - aws cli(installation: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
+- docker (installation: https://www.docker.com/products/docker-desktop)
 - nodejs
 - aws iam user with proper access
 - git
@@ -187,3 +188,18 @@ aws s3 cp ./cloudformation/templates_ecs s3://bottle-ecs-deploy-resources-bucket
 ```
 
 - If you are going to deploy in a completely new AWS account, please copy the cloudformation templates to an S3 bucket (for ECS deployment) and keep note of that s3 bucket, the default nomenclature is "**bottle-ecs-deploy-resources-bucket**" and the rest of the process is same as above
+
+## To delete Stacks created from above steps
+
+Example
+\
+
+```bash
+  ./service_scripts/delete_stack.sh stack_name="shailendra-ecs-stack" profile="learn" region="us-west-1"
+```
+
+replace the value inside with your required inputs
+
+- "**stack_name**" should be unique
+- "**profile**" is the aws profile you want to use ( refer to ~/.aws/config)
+  - "**region**" is the aws region you want to deploy your application
