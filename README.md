@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Clone the project, change into the directory and install the dependencies.
 
 ```bash
-git clone https://gitlab.com/bottle-tech/community/node-react.git
+git clone https://github.com/AmirStha/node_react_aws.git
 cd node-react
 npm install
 ```
@@ -32,7 +32,7 @@ npm run server
 
 The React application will run on port 3001.
 
-[**For deployment please click this**](https://gitlab.com/bottle-tech/community/node-react/blob/master/deployment_instructions.md)
+[**For deployment please click this**](https://github.com/AmirStha/node_react_aws/blob/master/deployment_instructions.md)
 
 Instruction to use multiple aws accounts with codecommit
 
@@ -40,7 +40,7 @@ https://aws.amazon.com/blogs/devops/using-git-with-aws-codecommit-across-multipl
 
 <!-- :mega: **_Easy to use Command Line Interface(CLI) feature coming soon_** :tada: :tada: :tada: -->
 
-[**Please visit this link**](https://gitlab.com/bottle-tech/community/btl-cli#btl-cloudform) for using our new command line interface feature
+<!-- [**Please visit this link**](https://gitlab.com/bottle-tech/community/btl-cli#btl-cloudform) for using our new command line interface feature -->
 
 Please checkout to yamlupdate branch before using this feature
 
